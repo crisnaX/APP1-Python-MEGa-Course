@@ -11,14 +11,14 @@ import webbrowser
 
 text1= ""
 
-print("lavada")
+
 
 def path():
     global text1
     f= fd.askopenfilename()
     text1 = text1+f
     field.insert(0,text1)
-    print("lavada1")
+    
 
 class maps:
     def __init__(self,data,lat,lon,nam,elev,map,html,fga):
@@ -59,7 +59,7 @@ class maps:
             iframe=folium.IFrame(html=self.html % (na,na,lt,ln,el),width=200,height=100)
             fga.add_child(folium.Marker(location=[lt,ln], popup=folium.Popup(iframe),icon=folium.Icon(color = self.color_producer(el))))
 
-    print("lavada2")
+    
    
 def inputs():
     global input0
@@ -76,17 +76,17 @@ def inputs():
     input1=b
     input2=c
     input3=d
-    print("lavada3")
+    
     
 
 root = tkinter.Tk()
-print("lavada4")
+
 root.resizable(True,True)
 root.title("Map_Data_Load")
 
 
 open=ttk.Button(root,text="OPEN",command=path)
-print("afteropenlavada")
+
 
 
 field = ttk.Entry(root)
@@ -122,7 +122,7 @@ elfield=ttk.Entry(root,textvariable=text5)
 elfield.grid(row=4,column=1)
 
 submit = ttk.Button(root,text="Submit",command=inputs)
-print("newlavada")
+
 submit.grid(row=5,column=2)
 root.mainloop()
 
@@ -131,7 +131,6 @@ root.mainloop()
 #style_function= lambda x : {'fillcolor':'#EE3D17'}))
 
 map= folium.Map(location=[16.9532,80.04],zoom_start=6,tiles='Stamen Terrain')
-print("lavada6")
 fga = folium.FeatureGroup(name="AirportMaps")
 html = """
        Airport_Details:<br>
@@ -143,7 +142,7 @@ html = """
 
 
 data = pandas.read_csv(text1)
-print("lavada8")
+
 lat=list(data[input0])
 lon = list(data[input1])
 nam = list(data[input2])
