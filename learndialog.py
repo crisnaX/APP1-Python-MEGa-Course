@@ -1,4 +1,5 @@
 
+
 import os
 import tkinter
 from tkinter import *
@@ -6,20 +7,21 @@ from tkinter import ttk
 import pandas
 import folium
 from tkinter import filedialog as fd
-import pathlib
+import webbrowser
 
 text1= ""
-global lat
 
+print("lavada")
 
 def path():
     global text1
     f= fd.askopenfilename()
     text1 = text1+f
     field.insert(0,text1)
+    print("lavada1")
 
 class maps:
-    def __init__(self,data,lat,lon,nam,elev,map,html,fga,fgc):
+    def __init__(self,data,lat,lon,nam,elev,map,html,fga):
         self.data=data
         self.lat=lat
         self.lon=lon
@@ -33,6 +35,7 @@ class maps:
 
 
     def color_producer(self,elev):
+        
         if elev >= 5000:
             return "pink"
         if elev >= 2000 and elev < 5000:
@@ -41,8 +44,12 @@ class maps:
             return "blue"
         if elev < 1000 and elev>=1:
             return "lightgreen"
+                
         else:
-            return "darkred"
+            return "green"
+            
+       
+            
 
     def execute(self):
     
@@ -50,21 +57,36 @@ class maps:
 
         for lt,ln,na,el in zip(lat,lon,nam,elev): 
             iframe=folium.IFrame(html=self.html % (na,na,lt,ln,el),width=200,height=100)
-            fga.add_child(folium.Marker(location=[lt,ln], popup=folium.Popup(iframe),icon=folium.Icon(color=self.color_producer(el))))
+            fga.add_child(folium.Marker(location=[lt,ln], popup=folium.Popup(iframe),icon=folium.Icon(color = self.color_producer(el))))
 
-
-  
-
+    print("lavada2")
+   
+def inputs():
+    global input0
+    global input1
+    global input2
+    global input3
+    
+    a = text2.get()
+    
+    b= text3.get()
+    c= text4.get()
+    d= text5.get()
+    input0=a
+    input1=b
+    input2=c
+    input3=d
+    print("lavada3")
     
 
-   
-
 root = tkinter.Tk()
+print("lavada4")
 root.resizable(True,True)
 root.title("Map_Data_Load")
 
 
 open=ttk.Button(root,text="OPEN",command=path)
+print("afteropenlavada")
 
 
 field = ttk.Entry(root)
@@ -98,22 +120,18 @@ elevate = ttk.Label(root,text="Elevation Variable As Table")
 elevate.grid(row=4,column=0)
 elfield=ttk.Entry(root,textvariable=text5)
 elfield.grid(row=4,column=1)
-submit = ttk.Button(root,text="Submit")
-submit.grid(row=5,column=2)
 
+submit = ttk.Button(root,text="Submit",command=inputs)
+print("newlavada")
+submit.grid(row=5,column=2)
 root.mainloop()
 
+#fgc = folium.FeatureGroup(name="World")
+#fgc.add_child(folium.GeoJson(data=open('C:\\Users\crisn\\pythonScripts\\Python MegaCourse Scripts\\mapping\\world.json','r',encoding='utf-8-sig').read(),
+#style_function= lambda x : {'fillcolor':'#EE3D17'}))
 
-
-
-         
-    
-
-fgc = folium.FeatureGroup(name="World")
-fgc.add_child(folium.GeoJson(data=open('C:\\Users\crisn\\pythonScripts\\Python MegaCourse Scripts\\mapping\\world.json','r',encoding='utf-8-sig').read(),
-style_function= lambda x : {'fillcolor':'#EE3D17'}))
-
-
+map= folium.Map(location=[16.9532,80.04],zoom_start=6,tiles='Stamen Terrain')
+print("lavada6")
 fga = folium.FeatureGroup(name="AirportMaps")
 html = """
        Airport_Details:<br>
@@ -123,25 +141,23 @@ html = """
        Elevtion: %s m
        """
 
+
 data = pandas.read_csv(text1)
-input = text2.get()
-input1= text3.get()
-input2= text4.get()
-input3= text5.get()
-    
-lat=list(data[input])
+print("lavada8")
+lat=list(data[input0])
 lon = list(data[input1])
 nam = list(data[input2])
+
 elev = list(data[input3])
 
 
-x=maps(data,lat,lon,nam,elev,map,html,fga,fgc)
+x=maps(data,lat,lon,nam,elev,map,html,fga)
 x.execute()
 
 map.add_child(fga)
-map.add_child(fgc)
+#map.add_child(fgc)
 map.add_child(folium.LayerControl())
-map.save("Map8.html")
-    
+map.save("Map7.html")
+
 
 
